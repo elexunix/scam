@@ -1,3 +1,5 @@
+# Steady Curvature Aware Minimizer (SCAM): The Power of Curvature-Aware Optimization in Machine Learning
+
 SCAM is a second-order optimization algorithm that aims to minimize the loss function by explicitly taking the curvature of the loss function into account. The algorithm operates by keeping track of a running average of the Hessian matrix of the loss function, which is used to adjust the learning rate at each iteration. Specifically, the learning rate is adjusted based on the ratio of the diagonal of the Hessian matrix to its trace.
 
 To implement SCAM in PyTorch using torch.optim, you would need to create a new optimizer class that inherits from the base Optimizer class in torch.optim. You would define the optimization step using the SCAM update rule to adjust the learning rate based on the curvature of the loss function.
