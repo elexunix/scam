@@ -1,0 +1,15 @@
+Consider the scenario where a machine learning researcher is working on a natural language processing task. The researcher is using Steady Curvature Aware Optimizer (SCAM) to optimize a neural network model that generates text. The goal is to make the generated text more human-like and coherent.
+
+Initially, everything seems to be going well. The model is improving and the researcher is getting better results. However, after running the optimization for several hours, he notices that the performance of the model is not improving anymore. Moreover, the loss seems to be stagnating and the gradients are vanishing.
+
+To address this problem, the researcher decides to increase the learning rate and update the Hessian estimate more frequently in SCAM. However, this only exacerbates the issue. The gradients become even more vanishing and the Hessian becomes explosive.
+
+Upon closer inspection, the researcher realizes that the issue is related to the way the network is generating text. The network is trained to output probability distributions over the vocabulary at each time step. However, some parts of the vocabulary are more likely than others, and the network has learned to favor them. This results in very low probabilities for less common words, which causes the gradients to vanish.
+
+At the same time, the Hessian matrix is becoming very large and its eigenvalues are exploding, which is causing numerical instability in the optimization algorithm.
+
+To address this issue, the researcher decides to use a different optimization algorithm that is more robust to vanishing gradients and exploding Hessians. He opts for the RMSprop optimizer, which has been shown to be effective for optimizing deep neural networks and is less prone to these kinds of issues.
+
+Additionally, the researcher decides to modify the network architecture to alleviate the problem of vanishing gradients. This can be done by adding skip connections or residual connections, which allows the gradients to flow more easily through the network.
+
+After making these changes, the optimization improves significantly and the model is able to generate more human-like and coherent text. The researcher learns an important lesson about the importance of understanding the limitations and challenges of different optimization algorithms, as well as the impact of network architecture on optimization.
