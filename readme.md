@@ -1,51 +1,9 @@
 # Steady Curvature Aware Minimizer (SCAM): The Power of Curvature-Aware Optimization in Machine Learning
 
-SCAM is a second-order optimization algorithm that aims to minimize the loss function by explicitly taking the curvature of the loss function into account. The algorithm operates by keeping track of a running average of the Hessian matrix of the loss function, which is used to adjust the learning rate at each iteration. Specifically, the learning rate is adjusted based on the ratio of the diagonal of the Hessian matrix to its trace.
+SCAM, or Steady Curvature Aware Minimizer, is a powerful optimization algorithm that is particularly useful for machine learning tasks. One of the main reasons for SCAM's popularity is that it can effectively optimize non-convex objectives with high-dimensional decision variables, both of which are quite common in machine learning.
 
-To implement SCAM in PyTorch using torch.optim, you would need to create a new optimizer class that inherits from the base Optimizer class in torch.optim. You would define the optimization step using the SCAM update rule to adjust the learning rate based on the curvature of the loss function.
+The reason why SCAM is so effective in these scenarios is because it uses a curvature-aware approach to optimization. This means that it adapts to the local curvature of the objective function, which allows it to converge more quickly and efficiently than other optimization algorithms. Additionally, the gradient and Hessian of the objective function are used to estimate the curvature, which makes SCAM more accurate and reliable than other methods.
 
-Here's some pseudocode to illustrate how you could implement the update rule for SCAM in PyTorch using the torch.Tensor and torch.optim frameworks:
+Despite its effectiveness, SCAM is notoriously difficult to implement because it requires complex numerical methods and careful tuning of convergence parameters. It also requires a high level of mathematical understanding, which can make it challenging for users who are not familiar with advanced optimization techniques.
 
-```
-from torch.optim import Optimizer
-
-class SCAM(Optimizer):
-    def __init__(self, params, lr=1e-3):
-        super(SCAM, self).__init__(params, defaults)
-        self.lr = lr
-        self.avg_H = None
-
-    def step(self, closure=None):
-        if closure is not None:
-            loss = closure()
-
-        if self.avg_H is None:
-            self.avg_H = torch.zeros((len(list(self.param_groups[0]['params'])), len(list(self.param_groups[0]['params'])))).to(device) # Initialize the running average of the Hessian matrix.
-
-        gradients = []
-        for param in self.param_groups[0]['params']:
-            gradients.append(param.grad.flatten())
-        gradients = torch.cat(gradients)
-
-        H = torch.autograd.functional.hessian(closure, self.param_groups[0]['params'], create_graph=True) # Compute the Hessian matrix of the loss function.
-
-        if self.avg_H is None:
-            self.avg_H = H
-        else:
-            self.avg_H = 0.5 * (self.avg_H + H) # Update the running average of the Hessian matrix using a decay factor.
-
-        H_diag = torch.diag_embed(torch.diagonal(H, dim1=-2, dim2=-1)) # Compute the diagonal elements of the Hessian matrix.
-
-        lr = self.lr * (torch.diagonal(H, dim1=-2, dim2=-1) / torch.trace(H))[0] # Compute the SCAM learning rate using the diagonal and trace of the Hessian matrix.
-
-        update = - torch.inverse(self.avg_H + H_diag) @ gradients # Compute the update using the SCAM update rule.
-
-        i = 0
-        for param in self.param_groups[0]['params']:
-            param.data.add_(lr[i] * update[i:(i+param.numel())].reshape(param.shape))
-            i += param.numel()
-
-        return loss
-```
-
-This is just a sketch and should be adjusted and tested to make sure it works properly.
+Despite its challenges, however, SCAM can provide significant benefits for machine learning tasks, including increased accuracy and efficiency. For this reason, many researchers and practitioners continue to use SCAM in their work, despite its difficulty of implementation.
